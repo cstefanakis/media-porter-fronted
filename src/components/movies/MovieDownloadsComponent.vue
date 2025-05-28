@@ -110,7 +110,6 @@ export default {
         size,
         totalPages,
         loading,
-        sourcePaths
       };
   },
 };
@@ -125,7 +124,7 @@ export default {
         <label for="sourcePath">Source: </label>
         <select v-model="sourcePath" required>
           <option value="" disabled>Select a type</option>
-          <option v-for="source in sourcePaths()" :key="source" :value="source.path">{{ source.title }}</option>
+          <option v-for="source in sources" :key="source" :value="source.path">{{ source.title }}</option>
         </select>
          
         <button type="submit">Submit</button>

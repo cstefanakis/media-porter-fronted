@@ -1,14 +1,5 @@
 <script>
-    import { ref, onMounted, watch } from 'vue';
-
-    export default{
-        setup() {
-
-            onMounted(() => {
-                // This is where you can fetch initial data or perform setup tasks
-            });
-        }
-    }
+    
 </script>
 
 <template>
