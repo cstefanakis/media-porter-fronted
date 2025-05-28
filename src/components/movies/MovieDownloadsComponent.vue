@@ -142,22 +142,24 @@ export default {
                 </div> 
             </router-link>         
           </div>
-
-          <div v-if="loading" class="spinner"></div>
-          <button @click="prevPage()" :disabled="page === 0">Previous</button>
-          <span>Page {{ page + 1 }} / {{ totalPages }}</span>
-          <button @click="nextPage()" :disabled="page === totalPages - 1">Next</button>
         </div>
-        <form @submit.prevent="organizeMovies">
-          <label for="destinationPath">Destination:</label>
-          <select v-model="destinationPath" required>
-          <option value="" disabled>Select a type</option>
-          <option v-for="source in sources" :key="source" :value="source.path">{{ source.path }}</option>
-        </select>
-         
-        <button type="submit">Submit</button>
-        </form>
-    </div>
+          <div class="spinner" v-if="loading"></div>
+            <button @click="prevPage()" :disabled="page === 0">Previous</button>
+              <span>Page {{ page + 1 }} / {{ totalPages }}</span>
+            <button @click="nextPage()" :disabled="page === totalPages - 1">Next</button>
+          </div>
+
+        <h2>Organize Movies</h2>
+          <form @submit.prevent="organizeMovies">
+            <label for="destinationPath">Destination:</label>
+            <select v-model="destinationPath" required>
+            <option value="" disabled>Select a type</option>
+            <option v-for="source in sources" :key="source" :value="source.path">{{ source.path }}</option>
+          </select>
+          
+          <button type="submit">Submit</button>
+          </form>
+    
   </template>
 
   <style scoped>
