@@ -10,6 +10,7 @@ export default {
     const size = ref(10);
     const totalPages = ref(0);
     const loading = ref(false);
+    const modifyLoading = ref(false);
 
     onMounted(async () => {
       getMovies();
@@ -71,6 +72,7 @@ export default {
       prevPage,
       getMovies,
       loading,
+      modifyLoading,
       getLanguageCode,
       getVideoCodec,
       getSubtitleLanguage,

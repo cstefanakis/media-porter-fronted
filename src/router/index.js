@@ -4,6 +4,7 @@ import MovieComponent from '../components/movies/MovieComponent.vue'
 import MovieDetailComponent from '../components/movies/MovieDetailsComponent.vue'
 import MovieDownloadsComponent from '../components/movies/MovieDownloadsComponent.vue'
 import MoviesMenuComponent from '../components/movies/MoviesMenuComponent.vue'
+import MovieIndexComponent from '../components/movies/MovieIndexComponent.vue'
 // Source components
 import SourcePathComponent from '../components/sourcePaths/SourcePathComponent.vue'
 import SourceMenuComponent from '../components/sourcePaths/SourceMenuComponent.vue'
@@ -54,6 +55,7 @@ const routes = [
         path: '/movies-menu',
         name: 'movies-menu',
         components: {
+          main: MovieIndexComponent,
           left: MoviesMenuComponent
         }
       },

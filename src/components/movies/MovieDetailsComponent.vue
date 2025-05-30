@@ -17,6 +17,7 @@ export default {
     const copyForm = ref('hidden');
     const moveForm = ref('hidden');
     const deleteForm = ref('hidden');
+    const modifyLoading = ref(false);
   
   onMounted(async () => {
     loading.value = true;
@@ -33,6 +34,7 @@ export default {
     });
 
     const renameMovie = async () => {
+      modifyLoading.value = true;
       try{
         const response = await axios.put('http://localhost:8080/api/movies/'+id, {},{
           params: {
@@ -43,10 +45,14 @@ export default {
         movie.value = response.data;
       }catch (error) {
           console.error('Error renaming movie:', error);
-      }
+      }finally {
+        modifyLoading.value = false;
+        closeForm();
       };
+    }
 
     const moveMovie = async () => {
+      modifyLoading.value = true;
       try{
         const response = await axios.put('http://localhost:8080/api/movies/move/' +id, null,{
           params: {
@@ -56,10 +62,14 @@ export default {
         movie.value = response.data;
       }catch (error) {
           console.error('Error moving movie:', error);
+      }finally {
+        modifyLoading.value = false;
+        closeForm();
       }
     }
 
     const copyMovie = async () => {
+      modifyLoading.value = true;
       try {
         const response = await axios.post('http://localhost:8080/api/movies/copy/' +id, null,{
           params: {
@@ -68,15 +78,22 @@ export default {
           });
       } catch (error) {
           console.error('Error copying movie:', error);
+      } finally {
+        modifyLoading.value = false;
+        closeForm();
       }
     }
 
     const deleteMovie = async () => {
+      modifyLoading.value = true;
       try {
         const response = await axios.delete('http://localhost:8080/api/movies/' +id,{
           });
       } catch (error) {
           console.error('Error copying movie:', error);
+      } finally {
+        modifyLoading.value = false;
+        closeForm();
       }
     }
 
@@ -217,6 +234,7 @@ const showForm = (form) => {
       deleteMovie,
       sources,
       loading,
+      modifyLoading,
       ratingImg,
       renameForm,
       copyForm,
@@ -284,7 +302,7 @@ const showForm = (form) => {
         </div>
       </div>
 
-      <div class = "video-details"> Video: 
+      <div class = "video-details"> Video:
         <div class ="video" v-if="getVideoCodec() !== null">{{ getVideoCodec() }}</div>
         <div class ="video" v-if="getVideoResolution() !== null"> {{ getVideoResolution() }}</div>
         <div class = "video" v-if="getVideoBitrate() !== null" > {{ getVideoBitrate() }} </div>
@@ -320,6 +338,7 @@ const showForm = (form) => {
           
         <button type="submit">Submit</button>
       </form>
+      <div v-if="modifyLoading" class="spinner"></div>
     </div>
 
     <div :class="moveForm">
@@ -333,6 +352,7 @@ const showForm = (form) => {
           
         <button type="submit">Submit</button>
       </form>
+      <div v-if="modifyLoading" class="spinner"></div>
     </div>
 
     <div :class="renameForm">
@@ -352,6 +372,7 @@ const showForm = (form) => {
         />
         <button type="submit">Submit</button>
       </form>
+      <div v-if="modifyLoading" class="spinner"></div>
     </div>
 
     <div :class = "deleteForm">
@@ -359,6 +380,7 @@ const showForm = (form) => {
       <button @click="deleteMovie()">Yes</button>
       <button @click="closeForm()">No</button>
     </div>
+    <div v-if="modifyLoading" class="spinner"></div>
   </div>
   </template>
 
