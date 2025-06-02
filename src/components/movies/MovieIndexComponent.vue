@@ -15,13 +15,15 @@ export default {
             try{
                 const responseAddedMovies = await axios.get('http://localhost:8080/api/movies/get-last-five-added-movies', {
                     params: {
-                        limit: limit.value
+                        page: 0,
+                        size: limit.value
                     }
                 });
 
                 const responseTopFive = await axios.get('http://localhost:8080/api/movies/get-top-five-movies', {
                     params: {
-                        limit: limit.value
+                        page: 0,
+                        size: limit.value
                     }
                 });
                 topFiveMovies.value = responseTopFive.data;
@@ -47,7 +49,6 @@ export default {
 
         const getTitleAndYear = (movie) => {
             const year = movie.year ? movie.year : null;
-            const title = movie.title ? movie.title : null;
             if (year === null) {
                 return movie.title;
             }

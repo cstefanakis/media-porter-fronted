@@ -255,7 +255,7 @@ const showForm = (form) => {
       <div>
         <div class = "title">
           <h2>{{ getTitleAndYear() }}</h2>
-          <div class = rating> Rate:  <img class = "rate-img" :src = "ratingImg()"> {{ getRating() }}</div>
+          <div > Rate:  <img class = "rate-img" :src = "ratingImg()"> {{ getRating() }}</div>
         </div>
         <div class = "genres">
           <div class = "genre" v-for="genre in getGenres()" :key="genre.id"> {{ genre.title }} </div>
@@ -397,11 +397,6 @@ const showForm = (form) => {
   vertical-align: middle;
 }
 
-.rating {
-  font-weight: bold;
-  margin-top: 10px;
-  text-align: left;
-}
 
 .genre, .video, .audio {
   border: 1px solid #ccc;

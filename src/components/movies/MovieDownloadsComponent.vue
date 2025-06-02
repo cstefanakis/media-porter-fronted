@@ -128,8 +128,9 @@ export default {
         </select>
          
         <button type="submit">Submit</button>
+        
       </form>
-
+      <div class="spinner" v-if="loading"></div>
         <div class = "movie-list">
           <div v-for="movie in movies" :key="movie.id">
             <router-link :to="goToMovieDetails(movie)">
@@ -143,13 +144,16 @@ export default {
             </router-link>         
           </div>
         </div>
-          <div class="spinner" v-if="loading"></div>
+          <div v-if ="page > 0">
             <button @click="prevPage()" :disabled="page === 0">Previous</button>
               <span>Page {{ page + 1 }} / {{ totalPages }}</span>
             <button @click="nextPage()" :disabled="page === totalPages - 1">Next</button>
           </div>
+        </div>
 
-        <h2>Organize Movies</h2>
+        <div v-if="page > 0">
+
+          <h2>Organize Movies</h2>
           <form @submit.prevent="organizeMovies">
             <label for="destinationPath">Destination:</label>
             <select v-model="destinationPath" required>
@@ -159,7 +163,7 @@ export default {
           
           <button type="submit">Submit</button>
           </form>
-    
+        </div>
   </template>
 
   <style scoped>

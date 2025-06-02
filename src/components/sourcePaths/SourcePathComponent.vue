@@ -27,14 +27,18 @@ export default {
                 console.error('Error creating source:', error);
                 alert('Failed to create SourcePath.');
             }
+            sourceForm.value = 'hidden';
         };
 
         onMounted(async () => {
+            loading.value = true;
             try {
                 const response = await axios.get('http://localhost:8080/api/sources');
                 sources.value = response.data;
             } catch (error) {
                 console.error('Error fetching sources:', error);
+            } finally {
+                loading.value = false;
             }
         });
 
@@ -65,6 +69,7 @@ export default {
     
     <div v-if="sources.length > 0">
         <h2>Sources</h2>
+        <div v-if="loading" class="spinner"></div>
         <table>
             <thead>
                 <tr>
