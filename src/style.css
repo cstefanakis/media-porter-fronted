@@ -90,6 +90,12 @@ button:focus-visible {
   margin: 10px auto;
 }
 
+.title {
+  font-weight: bold;
+  height: 40px;
+
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);

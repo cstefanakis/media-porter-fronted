@@ -1,8 +1,12 @@
 <script>
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
+import MoviesListComponent from './MoviesListComponent.vue';
 
 export default {
+  components: {
+    MoviesListComponent
+  },
   setup() {
 
     const movies = ref([]);
@@ -71,26 +75,6 @@ export default {
       }
     }
 
-    const getTitleAndYear = (movie) => {
-        return movie.year != null ? movie.title + " " + movie.year : movie.title;
-    };
-
-    const getPoster = (movie) => {
-      return movie.poster || null;
-    };
-
-    const getRating = (movie) => {
-      return movie.rating || null;
-    };
-
-    const getAudios = (movie) => {
-      return movie.audios || null;
-    };
-
-    const goToMovieDetails = (movie) => {
-      return "/movies/" + movie.id || [];
-    };
-
     return {
         movies,
         submitPath,
@@ -117,51 +101,38 @@ export default {
 </script>
 
 <template>
-    <div>
-      <h2>Create Movies From Path</h2>
-  
-      <form @submit.prevent="submitPath">
-        <label for="sourcePath">Source: </label>
-        <select v-model="sourcePath" required>
-          <option value="" disabled>Select a type</option>
-          <option v-for="source in sources" :key="source" :value="source.path">{{ source.title }}</option>
-        </select>
-         
-        <button type="submit">Submit</button>
+  <div>
+    <h2>Create Movies From Path</h2>
+
+    <form @submit.prevent="submitPath">
+      <label for="sourcePath">Source: </label>
+      <select v-model="sourcePath" required>
+        <option value="" disabled>Select a type</option>
+        <option v-for="source in sources" :key="source" :value="source.path">{{ source.title }}</option>
+      </select>
         
-      </form>
-      <div class="spinner" v-if="loading"></div>
-        <div class = "movie-list">
-          <div v-for="movie in movies" :key="movie.id">
-            <router-link :to="goToMovieDetails(movie)">
-                <div class="movie-card">
-                    <div>{{ getTitleAndYear(movie)}}</div>
-                    <img class="poster" :src="getPoster(movie)"/>
-                    <div v-for="audio in getAudios(movie)" :key="audio.id">
-                        <div>{{ audio.language?.englishTitle }}</div>
-                    </div>
-                </div> 
-            </router-link>         
-          </div>
-        </div>
-          <div v-if ="page > 0">
-            <button @click="prevPage()" :disabled="page === 0">Previous</button>
-              <span>Page {{ page + 1 }} / {{ totalPages }}</span>
-            <button @click="nextPage()" :disabled="page === totalPages - 1">Next</button>
-          </div>
+      <button type="submit">Submit</button>
+      
+    </form>
+    <div class="spinner" v-if="loading"></div>
+    <MoviesListComponent :movies="movies" />
+  </div>
+        <div v-if ="page > 0">
+          <button @click="prevPage()" :disabled="page === 0">Previous</button>
+            <span>Page {{ page + 1 }} / {{ totalPages }}</span>
+          <button @click="nextPage()" :disabled="page === totalPages - 1">Next</button>
         </div>
 
         <div v-if="page > 0">
-
           <h2>Organize Movies</h2>
           <form @submit.prevent="organizeMovies">
             <label for="destinationPath">Destination:</label>
             <select v-model="destinationPath" required>
-            <option value="" disabled>Select a type</option>
-            <option v-for="source in sources" :key="source" :value="source.path">{{ source.path }}</option>
-          </select>
+              <option value="" disabled>Select a type</option>
+              <option v-for="source in sources" :key="source" :value="source.path">{{ source.path }}</option>
+            </select>
           
-          <button type="submit">Submit</button>
+            <button type="submit">Submit</button>
           </form>
         </div>
   </template>

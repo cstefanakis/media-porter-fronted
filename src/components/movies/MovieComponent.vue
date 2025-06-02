@@ -2,8 +2,12 @@
 import {ref, onMounted, watch} from 'vue';
 import axios from 'axios';
 import rateIcon from '../../assets/rateIcon.png';
+import MoviesListComponent from '../movies/MoviesListComponent.vue';
 
 export default {
+  components: {
+    MoviesListComponent
+  },
   setup() {
     const movies = ref([]);
     const page = ref(0);
@@ -80,26 +84,6 @@ export default {
       }
     }
 
-    const getLanguageCode = (audio) => {
-      return audio?.language?.iso6391 || null;
-    }
-
-    const getVideoCodec = (movie) => {
-      return movie.video?.codec?.name || null;
-    }
-
-    const getSubtitleLanguage = (subtitle) => {
-      return subtitle.language?.englishTitle || null;
-    }
-
-    const getPoster = (movie) => {
-      return movie.poster || null;;
-    }
-
-    const getRating = (movie) => {
-      return movie.rating || null;
-    }
-
     const cleanFilterArrays = () => {
       countries.value = [];
       audios.value = [];
@@ -118,19 +102,6 @@ export default {
         formStyle.value = 'advanced-filter';
       }
     }
-
-    const getTitleAndYear = (movie) => {
-      const year = movie.year ? movie.year : null;
-      if (year === null) {
-          return movie.title;
-      }
-      return movie.title + " " + movie.year;
-    }
-
-    const goToMovieDetails = (movie) => {
-      return "/movies/" + movie.id || [];
-    };
-
 
     const getData = () => {
 
@@ -177,15 +148,9 @@ export default {
       prevPage,
       loading,
       modifyLoading,
-      getLanguageCode,
-      getVideoCodec,
-      getSubtitleLanguage,
-      getPoster,
-      getRating,
-      rateIcon,
+  
+      
       filterMovies,
-      getTitleAndYear,
-      goToMovieDetails,
 
       getData,
       countries,
@@ -214,7 +179,6 @@ export default {
 </script>
 
 <template>
-
   
     <form :class = "formStyle" @submit.prevent="filterMovies">
       <table>
@@ -306,93 +270,12 @@ export default {
         <div v-if="loading" class = "spinner"></div>
     <button @click="advancedFilterOn">Advanced Filter</button>
     </form>
-   
-    
-    
-    <div v-if="movies.length === 0">No movies found.</div>
-      <div v-else>
-        <div v-if="movies.length > 0">
-          
-        <div class="movie-list">
-            <div v-for="movie in movies" :key="movie.id">
-                <router-link :to="goToMovieDetails(movie)">
-                  <div class="movie-card">
 
-                    <div class = "title">{{ getTitleAndYear(movie) }}</div>
-        
-                    <img class="poster" :src="getPoster(movie)" alt="Movie Poster" />
+    <MoviesListComponent :movies="movies"/>
 
-                    <div class = "video-codec">{{ getVideoCodec(movie) }}</div>
-                    <div>
-                        <div v-for="audio in movie.audios" :key="audio.id">
-                            <div>{{ getLanguageCode(audio)}}</div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div v-for="subtitle in movie.subtitles" :key="subtitle.id">
-                            <div>{{ getSubtitleLanguage(subtitle) }}</div>
-                        </div>
-                    </div>
-                
-                    <div> <img class = "rate-img" :src ="rateIcon">{{ getRating(movie) }}</div>
-                    </div>
-                </router-link>
-            </div>
-          </div>
-          <div v-if ="page > 0">
-            <button @click="prevPage()" :disabled="page === 0">Previous</button>
-            <div>{{ page + " / " + totalPages }}</div>
-            <button @click="nextPage()" :disabled="page === totalPages - 1">Next</button>
-          </div>
-        </div>
-    </div>
-    
   </template>
 
 <style>
-.movie-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.movie-card {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    width: 120px;
-    text-align: center;
-}
-
-.title {
-  font-weight: bold;
-
-}
-
-.rating {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width:100px;
-    background-color: #f39c12;
-    color: black;
-}
-
-.genre {
-    display: flex;
-  flex-wrap: wrap;
-  gap: 3px;
-}
-
-.rate-img {
-  width: 20px;
-  height: 20px;
-  vertical-align: middle;
-}
-
-.poster {
-  width: 120px;
-  object-fit: cover;
-}
 
 .advanced-filter {
   display: flex;
@@ -417,9 +300,5 @@ export default {
   flex-direction:wrap;
   margin-right: 10px;
   text-align: left;
-}
-
-.rate {
-  width: 20px;
 }
 </style>
